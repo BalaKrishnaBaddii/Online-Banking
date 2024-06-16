@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+  font-family: "Roboto", sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+.App {
+  display: flex;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  width: 20%;
+  background-color: #3d2f98;
+  border-right: 1px solid #54c8d5;
+  border-radius: 0 5px 5px 0;
+  padding: 1rem 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  padding: 1rem;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar li:hover {
+  background-color: #ffffff;
+  color: #3d2f98;
+}
+
+.sidebar-button,
+.banking button {
+  align-self: center;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  margin: 1rem 0;
+  background-color: #54c8d5;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  font-weight: bold;
+}
+
+.sidebar-button:hover {
+  background-color: #ffffff;
+  color: #3d2f98;
+  border: 1px solid #54c8d5;
+}
+
+.add-bank {
+  height: 100vh;
+  width: 80%;
+  padding: 2rem;
+  background-color: #fff;
+  overflow-y: auto;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.right-panel {
+  background-color: #3c458b;
+  width: 80%;
+}
+
+.right-panel .top-bar {
+  display: flex;
+  background-color: #3e5d93;
+  color: #fff;
+  font-weight: bold;
+  margin: 0px 0px 10px 0px;
+  padding: 20px;
+  align-items: center;
+  font-weight: 500px;
+  justify-content: right;
+}
+
+.red {
+  color: red;
+  padding-left: 0.5rem;
+}
+.green {
+  color: rgb(6, 243, 14);
+  padding-left: 0.5rem;
+}
+
+.banking {
+  background-color: #203e7e;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 1rem;
+  display: flex 2;
+  font-family: "Roboto", sans-serif;
+  height: 21rem;
+}
+
+.banking label {
+  color: #f4f4f9;
+  width: 500px;
+  padding: 1rem 0px 1rem 0px;
+  margin: 0px;
+}
+
+.banking select,
+.banking option,
+.banking input {
+  color: #f4f4f9;
+  background-color: #203e7e;
+  width: 500px;
+  padding: 0.5rem;
+  margin: 1rem 0px 1rem 0px;
+  border: 1px solid olivedrab;
+}
+
+.banking button {
+  width: 200px;
+  margin-left: 19rem;
+  justify-content: center;
+}
