@@ -4,17 +4,17 @@ import { AdddBankAccount } from "./AdddBankAccount";
 
 const banks = [
   {
-    number: 1,
+    number: 10,
     name: "HDFC Bank",
     balance: 500,
   },
   {
-    number: 2,
+    number: 245,
     name: "Axis Bank",
     balance: 2500,
   },
   {
-    number: 3,
+    number: 324,
     name: "ICICI Bank",
     balance: 48000,
   },
@@ -24,6 +24,7 @@ export default function App() {
   const [bankAccounts, setBankAccounts] = useState(banks);
   const [showAddBankAccount, setShowBankAccount] = useState(false);
   const [selectedBankAccount, setSelectedBankAccount] = useState(null);
+  console.log(bankAccounts);
 
   function handleShowBankAccount() {
     setShowBankAccount((showAddBankAccount) => !showAddBankAccount);
@@ -39,16 +40,15 @@ export default function App() {
     setShowBankAccount(false);
   }
 
-  function handleBankBalance(balance) {
-    // setSelectedBankAccount = { ...selectedBankAccount, balance: balance };
+  function handleBankBalances(newBalance) {
     setBankAccounts((bankAccounts) =>
       bankAccounts.map((bank) =>
-        bank.id === selectedBankAccount.id
-          ? { ...bank, balance: balance }
+        bank.number === selectedBankAccount.number
+          ? { ...bank, balance: newBalance }
           : bank
       )
     );
-    console.log(bankAccounts);
+    setSelectedBankAccount(null);
   }
 
   return (
@@ -64,7 +64,8 @@ export default function App() {
         <RightPanel
           bankAccounts={bankAccounts}
           selectedBankAccount={selectedBankAccount}
-          handleBankBalance={handleBankBalance}
+          handleBankBalance={handleBankBalances}
+          key={selectedBankAccount?.number}
         />
       )}
     </div>
@@ -99,11 +100,21 @@ function Banking({ selectedBankAccount, handleBankBalance }) {
   const [amount, setAmount] = useState("");
   const [withdraw, setWithdraw] = useState("withdraw");
 
-  function handleProceed() {
+  function handleProceed(e) {
+    e.preventDefault();
     withdraw === "withdraw"
       ? handleBankBalance(selectedBankAccount.balance - amount)
       : handleBankBalance(selectedBankAccount.balance + amount);
   }
+
+  function handleAmount(e) {
+    if (withdraw === "deposit") return setAmount(Number(e.target.value));
+    Number(e.target.value) <= selectedBankAccount.balance &&
+    Number(e.target.value) >= 0
+      ? setAmount(Number(e.target.value))
+      : setAmount(selectedBankAccount.balance);
+  }
+
   return (
     <>
       <form className="banking" onSubmit={handleProceed}>
@@ -119,11 +130,7 @@ function Banking({ selectedBankAccount, handleBankBalance }) {
           type="text"
           value={amount}
           placeholder="Enter Amount to Withdraw"
-          onChange={(e) =>
-            e.target.value <= selectedBankAccount.balance
-              ? setAmount(Number(e.target.value))
-              : setAmount(selectedBankAccount.balance)
-          }
+          onChange={(e) => handleAmount(e)}
         />
 
         <button type="submit">{"Proceed"}</button>
