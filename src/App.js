@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./styles.css";
 import { AdddBankAccount } from "./AdddBankAccount";
+import { RightPanel } from "./RightPanel";
+import { Sidebar } from "./Sidebar";
 
 const banks = [
   {
@@ -25,7 +27,6 @@ export default function App() {
   const [showAddBankAccount, setShowBankAccount] = useState(false);
   const [selectedBankAccount, setSelectedBankAccount] = useState(null);
   console.log(bankAccounts);
-
   function handleShowBankAccount() {
     setShowBankAccount((showAddBankAccount) => !showAddBankAccount);
   }
@@ -51,6 +52,12 @@ export default function App() {
     setSelectedBankAccount(null);
   }
 
+  function handleDeleteBank(delBank) {
+    const updatedBanks = bankAccounts.filter(
+      (bank) => bank.number !== delBank.number
+    );
+    setBankAccounts(updatedBanks);
+  }
   return (
     <div className="App">
       <Sidebar
@@ -58,6 +65,7 @@ export default function App() {
         onAddBank={handleShowBankAccount}
         showAddBankAccount={showAddBankAccount}
         onSelectedBank={handleSelectedBank}
+        onDeleteBank={handleDeleteBank}
       />
       {showAddBankAccount && <AdddBankAccount handleAddBank={handleAddBank} />}
       {!showAddBankAccount && (
@@ -65,108 +73,10 @@ export default function App() {
           bankAccounts={bankAccounts}
           selectedBankAccount={selectedBankAccount}
           handleBankBalance={handleBankBalances}
+          setSelectedBankAccount={setSelectedBankAccount}
           key={selectedBankAccount?.number}
         />
       )}
     </div>
   );
-}
-
-function RightPanel({ bankAccounts, selectedBankAccount, handleBankBalance }) {
-  const totalBalance = bankAccounts.reduce(
-    (total, account) => total + account.balance,
-    0
-  );
-
-  return (
-    <div className="right-panel">
-      <div className="top-bar">
-        <p>Bank Balance: </p>
-        <span className={totalBalance > 0 ? "green" : "red"}>
-          &#x20B9; {totalBalance}/-
-        </span>
-      </div>
-      {selectedBankAccount && (
-        <Banking
-          selectedBankAccount={selectedBankAccount}
-          handleBankBalance={handleBankBalance}
-        />
-      )}
-    </div>
-  );
-}
-
-function Banking({ selectedBankAccount, handleBankBalance }) {
-  const [amount, setAmount] = useState("");
-  const [withdraw, setWithdraw] = useState("withdraw");
-
-  function handleProceed(e) {
-    e.preventDefault();
-    withdraw === "withdraw"
-      ? handleBankBalance(selectedBankAccount.balance - amount)
-      : handleBankBalance(selectedBankAccount.balance + amount);
-  }
-
-  function handleAmount(e) {
-    if (withdraw === "deposit") return setAmount(Number(e.target.value));
-    Number(e.target.value) <= selectedBankAccount.balance &&
-    Number(e.target.value) >= 0
-      ? setAmount(Number(e.target.value))
-      : setAmount(selectedBankAccount.balance);
-  }
-
-  return (
-    <>
-      <form className="banking" onSubmit={handleProceed}>
-        <label>Welcome to {selectedBankAccount.name} Banking </label>
-        <select onChange={(e) => setWithdraw(e.target.value)}>
-          <option value={"withdraw"}>Withdraw Amount</option>
-          <option value={"deposit"}>Deposit Amount</option>
-        </select>
-        <label>Avail Balance</label>
-        <input type="text" disabled value={selectedBankAccount.balance} />
-        <label>Amount</label>
-        <input
-          type="text"
-          value={amount}
-          placeholder="Enter Amount to Withdraw"
-          onChange={(e) => handleAmount(e)}
-        />
-
-        <button type="submit">{"Proceed"}</button>
-      </form>
-    </>
-  );
-}
-
-function Sidebar({
-  bankAccounts,
-  onAddBank,
-  showAddBankAccount,
-  onSelectedBank,
-}) {
-  return (
-    <div className="sidebar">
-      <ul>
-        {bankAccounts.map((bank) => (
-          <Bank key={bank.number} bank={bank} onSelectedBank={onSelectedBank} />
-        ))}
-      </ul>
-      <Button onclick={onAddBank}>
-        {showAddBankAccount ? "Close" : "Add Bank"}
-      </Button>
-    </div>
-  );
-}
-
-function Button({ onclick, children }) {
-  return (
-    <button className="sidebar-button" onClick={onclick}>
-      {children}
-    </button>
-  );
-}
-
-function Bank({ bank, onSelectedBank }) {
-  return <li onClick={() => onSelectedBank(bank)}>{bank.name}</li>;
 }

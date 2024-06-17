@@ -40,7 +40,9 @@ export function AdddBankAccount({ handleAddBank }) {
         <input
           type="text"
           value={balance}
-          onChange={(e) => setBalance(Number(e.target.value))}
+          onChange={(e) =>
+            setBalance(Number(e.target.value) ? Number(e.target.value) : "")
+          }
         />
         <button type="submit">Add Account</button>
       </form>
